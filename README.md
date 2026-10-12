@@ -17,13 +17,14 @@ Um programa desktop em português para traduzir e revisar jogos Ren'Py. Inspirad
 
 ## Executar no Windows
 
-Requisitos: **Python 3.11 ou superior**, Windows 10/11 de 64 bits e um jogo Ren'Py com seu motor funcional. O executável do jogo não é incluído neste projeto.
+Requisitos: **Python 3.12 de 64 bits recomendado** (suporte a Python 3.11–3.14 convencional), Windows 10/11 de 64 bits e um jogo Ren'Py com seu motor funcional. Python 3.15 e versões free-threaded ainda não são suportados. O executável do jogo não é incluído neste projeto.
 
-Depois de baixar/clonar o projeto, abra `scripts/start_windows.bat`. O script cria o ambiente Python, instala as dependências e inicia a interface. Ou execute na pasta do projeto:
+Depois de baixar/clonar o projeto, abra `scripts/start_windows.bat`. O instalador reutiliza uma `.venv` compatível ou procura Python 3.12, 3.13, 3.14 e 3.11, nessa ordem. Se o ambiente existente for incompatível, ele é preservado em `.venv-backup-<data>-<id>` antes da criação de uma nova `.venv`. Os pacotes externos são instalados a partir de wheels, sem compilar PyYAML nem exigir Visual C++.
+
+Ou execute na pasta do projeto:
 
 ```powershell
-py -3 -m venv .venv
-.venv\Scripts\python.exe -m pip install -e .
+py -3 scripts/setup_windows.py
 .venv\Scripts\python.exe -m renpy_revisor
 ```
 
@@ -34,6 +35,22 @@ Para conhecer a interface sem um jogo:
 ```
 
 O modo demo usa textos e IDs ilustrativos; não serve como tradução de um jogo real.
+
+### Se a instalação falhou com PyYAML / Microsoft Visual C++
+
+Um ambiente criado com `py -3 -m venv .venv` pode usar o Python mais recente instalado, incluindo 3.15. Sem um wheel PyYAML compatível, o pip tenta compilar o pacote e pede o Visual C++. Instale **Python 3.12 de 64 bits**, baixe a versão atual do projeto e execute novamente `scripts/start_windows.bat`; o instalador preserva e substitui a `.venv` incompatível automaticamente.
+
+Para recuperar uma cópia antiga do projeto manualmente, sem apagar o ambiente anterior:
+
+```powershell
+# Execute na pasta do projeto, com Python 3.12 de 64 bits instalado.
+if (Test-Path .venv) { Move-Item .venv ('.venv-backup-' + [guid]::NewGuid().ToString('N')) }
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install --only-binary=:all: -e .
+.venv\Scripts\python.exe -m renpy_revisor
+```
+
+Não é necessário instalar o compilador Visual C++ para esse fluxo.
 
 Para gerar uma distribuição com `.exe`, execute **no Windows**:
 

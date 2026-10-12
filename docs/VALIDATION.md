@@ -6,7 +6,7 @@ Ambiente: Debian 13, Python 3.12, PySide6 Essentials 6.12.0. Validação em 12/1
 | --- | --- |
 | Instalação editável com dependências de desenvolvimento | Concluída |
 | Repetição do script de instalação na nuvem | Concluída |
-| `python -m pytest -q` com Qt offscreen | **32 aprovados, 2 ignorados** |
+| `python -m pytest -q` com Qt offscreen | **40 aprovados, 2 ignorados** |
 | `python -m pip check` | Nenhuma dependência incompatível |
 | Interface Qt criada, mostrada e manipulada sem tela | Concluída; captura em `docs/interface.png` |
 | Edição, revisão, busca e reabertura de projeto | Verificadas pelos testes Qt |
@@ -18,6 +18,11 @@ Ambiente: Debian 13, Python 3.12, PySide6 Essentials 6.12.0. Validação em 12/1
 | Requisição real ao Google | **Bloqueada:** proxy respondeu `403 Forbidden` ao túnel HTTPS |
 | Download do SDK pelo site oficial | **Bloqueado:** proxy respondeu `403 Forbidden` ao túnel HTTPS |
 | Build de uma distribuição Windows `.exe` | **Não executado:** exige ambiente Windows |
+| Seleção de Python compatível e preservação de `.venv` incompatível | Verificadas pelos testes do bootstrap Windows |
+| Pacotes pré-compilados para Windows/Python 3.12 | Download confirmado para Qt, PyYAML, Requests e ferramentas de teste/build |
+| PyYAML pré-compilado para Windows/Python 3.14 | Download confirmado |
+
+O log de instalação enviado pelo usuário mostrou Python 3.15 e uma tentativa de compilar PyYAML sem Visual C++. O bootstrap agora seleciona Python 3.11–3.14 de 64 bits, prefere 3.12 e exige wheels para dependências externas. A `.venv` anterior é preservada antes da substituição. Os testes do bootstrap executaram no Linux com simulação do launcher Windows; os scripts `.bat`/PowerShell ainda não foram executados nesta máquina. A CI Windows foi configurada para usar o bootstrap real.
 
 Os dois testes nativos em `tests/test_native_integration.py` ficam disponíveis para a validação no Windows/SDK. Os testes simulados não demonstram compatibilidade da ferramenta binária com jogos reais.
 
