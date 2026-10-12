@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "renpy-translator-revisor"
+version = "0.1.0"
+description = "Tradutor e revisor desktop para jogos Ren'Py"
+requires-python = ">=3.11"
+dependencies = ["PySide6-Essentials==6.12.0", "requests==2.34.2", "PyYAML==6.0.3"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+build = ["pyinstaller>=6.11,<7"]
+
+[project.scripts]
+renpy-revisor = "renpy_revisor.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["renpy_revisor*"]
+
+[tool.setuptools.package-data]
+renpy_revisor = ["resources/*.zip"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
